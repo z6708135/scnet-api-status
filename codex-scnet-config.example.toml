@@ -1,0 +1,12 @@
+# Merge these entries into ~/.codex/config.toml.
+# Keep the API key out of this file. Set it in the environment instead:
+# export SCNET_TOKEN_PLAN_API_KEY='your-new-sk-tp-key'
+
+model = "DeepSeek-V4-Flash-0731"
+model_provider = "scnet"
+
+[model_providers.scnet]
+name = "SCNet Token Plan"
+base_url = "https://api.scnet.cn/api/llm/v1"
+env_key = "SCNET_TOKEN_PLAN_API_KEY"
+wire_api = "responses"

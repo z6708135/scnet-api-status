@@ -1,0 +1,34 @@
+name: SCNet API status probe
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: scnet-api-status-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Send real streaming chat probe and publish metrics
+        env:
+          SCNET_API_KEY: ${{ secrets.SCNET_API_KEY }}
+          STATUS_JSON_PATH: docs/status.json
+        run: python3 monitor_and_publish.py
+      - name: Commit updated status history
+        run: |
+          if git diff --quiet -- docs/status.json; then
+            exit 0
+          fi
+          git config user.name "scnet-status-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -- docs/status.json
+          git commit -m "chore: update SCNet API status"
+          git push
