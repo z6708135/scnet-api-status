@@ -51,7 +51,7 @@
 不要把 API Key 写入脚本或提交到 Git：
 
 ```bash
-export SCNET_API_KEY='你的 sk-tp-... 密钥'
+export SCNET_API_KEY='允许脚本调用的普通 sk-... 密钥'
 cd /home/zhang/Desktop/scnet-api-check
 python3 scnet_api_check.py
 ```

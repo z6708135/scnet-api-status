@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="真实对话监测国家超算互联网模型 API 的可用率、TTFT、输出速度与截断情况。">
+  <meta property="og:title" content="SCNet API Status · 社区可用性监测">
+  <meta property="og:description" content="真实对话 · TTFT · 输出速度 · 可用率">
+  <meta property="og:image" content="https://z6708135.github.io/scnet-api-status/og.png">
+  <title>SCNet API Status · 社区可用性监测</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<main>
+  <header class="topbar"><a class="brand" href="#top"><span class="brand-mark">S</span><span>SCNet API Status</span></a><nav><a href="#quick-test">快速测试</a><a href="#history">历史记录</a><a href="#method">监测说明</a></nav><span class="community-label">社区监测 · 非官方</span></header>
+  <section class="hero" id="top"><div class="eyebrow"><span class="pulse partial" id="hero-pulse"></span> 独立可用性监测</div><h1>国家超算互联网<br>模型 API 状态</h1><p class="hero-copy">持续记录 SCNet OpenAI 兼容端点的真实对话成功率、首 Token 时间、输出速度与截断情况。</p></section>
+
+  <section class="status-panel partial" id="status-panel"><div><p class="section-kicker">当前状态</p><h2><span class="status-dot"></span><span id="status-label">仅端点</span></h2><p class="status-note" id="status-note">正在读取最近一次监测结果…</p></div><div class="last-check"><span>最后检查</span><strong id="last-check">—</strong><small id="data-mode">静态状态数据</small></div></section>
+
+  <section class="metrics"><article><span>30 天可用率</span><strong id="uptime">—</strong><small id="sample-count">数据积累中</small></article><article><span>首 Token 时间</span><strong id="ttft">—</strong><small>最近成功响应</small></article><article><span>输出速度</span><strong id="output-tps">—</strong><small>服务端 usage 计数</small></article><article><span>截断次数</span><strong id="truncations">—</strong><small>最近 30 天 · finish_reason=length</small></article></section>
+
+  <section class="quick-test" id="quick-test"><div class="test-intro"><p class="section-kicker">一次性测试</p><h2>现在发起一轮真实对话</h2><p>输入一句话，安全后端会向同一模型发送流式请求，并返回回复、TTFT、总耗时和输出速度。每位访客有严格频率限制。</p></div><form class="chat-card" id="chat-form"><label for="quick-message">你的消息</label><div class="chat-input-row"><input id="quick-message" value="Hello world" maxlength="280" required><button type="submit" id="send-button">发送测试</button></div><small>最多 280 字符；默认使用 “Hello world”。</small><p class="chat-error" id="chat-error" hidden></p><div class="chat-result" id="chat-result" hidden><div class="reply"><span>模型回复</span><p id="chat-reply"></p></div><div class="test-metrics" id="chat-metrics"></div></div></form></section>
+
+  <section class="timeline"><div class="section-heading"><div><p class="section-kicker">近况</p><h2>最近 36 次探测</h2></div><div class="legend"><span class="key up"></span>正常 <span class="key down"></span>异常 <span class="key partial"></span>仅端点</div></div><div class="bars" id="bars"></div></section>
+
+  <section class="history" id="history"><div class="section-heading"><div><p class="section-kicker">明细</p><h2>最近记录</h2></div><span class="model-chip">DeepSeek-V4-Flash-0731</span></div><div class="table-wrap"><table><thead><tr><th>时间</th><th>状态</th><th>HTTP</th><th>总延迟</th><th>TTFT</th><th>输出速度</th><th>截断</th></tr></thead><tbody id="history-body"></tbody></table></div></section>
+
+  <section class="method" id="method"><div><p class="section-kicker">监测方法</p><h2>真实对话，透明结论</h2></div><div class="method-copy"><p>定时探针发送固定的 “Hello world” 并接收完整流式回复，记录 HTTP 状态、TTFT、总耗时、usage 输出 Token 与 finish reason；不保存回复正文。</p><p>只有真实推理请求计入可用率。<code>finish_reason=length</code> 计为一次截断；模型目录可达但未完成推理时仅标记“仅端点”。</p></div></section>
+  <footer><p>独立社区项目，不代表 SCNet 官方服务承诺。</p><p>页面每分钟刷新 · 所有时间为中国标准时间</p></footer>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>
